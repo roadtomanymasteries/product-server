@@ -1,9 +1,10 @@
 import express from 'express';
-import { mockProductData } from '../../db/products';
 import {
   getProductById,
   deleteProductById,
   getProducts,
+  addNewProduct,
+  reseed,
 } from '../repositories/products';
 import { updateProductById } from '../services/products';
 import { Product } from '../services/products';
@@ -31,8 +32,8 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
   const { id, description, model, brand } = req.body;
-  mockProductData.push({ id, description, model, brand });
-  return res.status(201).json(true);
+  const result = addNewProduct({ id, description, model, brand });
+  return res.status(201).json(result);
 });
 
 router.put('/:id', (req, res) => {
@@ -43,13 +44,18 @@ router.put('/:id', (req, res) => {
     id,
     product: { id, description, model, brand },
   });
-  res.status(200).json(result);
+  return res.status(200).json(result);
 });
 
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
-  const result = deleteProductById(id);
-  return res.status(200).json(result);
+  deleteProductById(id);
+  return res.status(200).json(true);
+});
+
+router.post('/reseed', (_, res) => {
+  reseed();
+  return res.status(200).json(true);
 });
 
 export default router;

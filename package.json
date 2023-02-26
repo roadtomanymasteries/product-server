@@ -3,27 +3,36 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
+  "typings": "dist/index",
   "scripts": {
-    "lint": "eslint",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "npx tsc",
     "start": "node dist/index.js",
-    "dev": "ts-node-dev ./src/index"
+    "dev": "ts-node-dev ./src/local.ts"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@vendia/serverless-express": "^4.10.1",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "express-session": "^1.17.3",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
+    "@types/express-session": "^1.17.6",
+    "@types/jest": "^29.4.0",
     "@types/node": "^18.14.0",
+    "@types/supertest": "^2.0.12",
     "@types/uuid": "^9.0.0",
+    "dotenv": "^16.0.3",
     "eslint": "^8.34.0",
+    "jest": "^29.4.3",
     "prettier": "2.8.4",
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
     "typescript": "^4.9.5"

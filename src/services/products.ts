@@ -22,7 +22,7 @@ export const updateProductById = (payload: UpdateProductType) => {
     item.model = model;
     item.brand = brand;
 
-    return true;
+    return item;
   } catch (error) {
     throw new Error(error as string);
   }

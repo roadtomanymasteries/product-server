@@ -1,20 +1,10 @@
-import express from 'express';
-import cors from 'cors';
-const PORT = process.env.PORT || 3001;
+import app from './app';
+import serverless from '@vendia/serverless-express';
 
-const app = express();
-app.use(express.json());
-app.use(cors());
+export const handler = async (event: any, context: any, callback: any) => {
+  const slashIndex = event.path.indexOf('/', 1);
+  event.path = event.path.substring(slashIndex);
 
-app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}..`);
-});
-
-app.get('/', (req, res) => {
-  res.send('basic express scaffolding!uighuih');
-});
-app.get('/second', (req, res) => {
-  res.send('rouasasste');
-});
-
-export default app;
+  const serverlessInstance = serverless({ app });
+  return serverlessInstance(event, context, callback);
+};
