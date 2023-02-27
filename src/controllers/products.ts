@@ -5,23 +5,19 @@ import {
   getProducts,
   addNewProduct,
   reseed,
+  Product,
+  updateProductById,
 } from '../repositories/products';
-import { updateProductById } from '../services/products';
-import { Product } from '../services/products';
 
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  try {
-    const { type, value } = req.query;
-    const result = getProducts({
-      type: type as keyof Product,
-      value: value as string,
-    });
-    res.status(200).json(result);
-  } catch (error) {
-    throw new Error(error as string);
-  }
+  const { type, value } = req.query;
+  const result = getProducts({
+    type: type as keyof Product,
+    value: value as string,
+  });
+  return res.status(200).json(result);
 });
 
 router.get('/:id', (req, res) => {
@@ -39,10 +35,12 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
   const { id } = req.params;
   const { description, model, brand } = req.body;
-
+  console.log(description, model, brand);
   const result = updateProductById({
     id,
-    product: { id, description, model, brand },
+    description,
+    model,
+    brand,
   });
   return res.status(200).json(result);
 });

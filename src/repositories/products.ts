@@ -1,17 +1,23 @@
 import { mockProductData } from './../../db/products';
-import { Product } from '../services/products';
+
+export interface Product {
+  id: string;
+  description: string;
+  model: string;
+  brand: string;
+}
 
 let original = [...mockProductData];
 const copy = [...mockProductData];
 
-export const getProductById = (id: string): Product => {
+export const getProductById = (id: string) => {
   try {
     const result = original.filter((product) => {
       return product.id === id;
     });
     return result[0];
   } catch (error) {
-    throw new Error(error as string);
+    return (error as Error).message;
   }
 };
 
@@ -30,7 +36,7 @@ export const getProducts = ({
       (item) => item[type].toLowerCase() === value.toLowerCase(),
     );
   } catch (error) {
-    throw new Error(error as string);
+    return (error as Error).message;
   }
 };
 
@@ -40,7 +46,7 @@ export const deleteProductById = (id: string) => {
     original.splice(removalIndex, 1);
     return true;
   } catch (error) {
-    throw new Error(error as string);
+    return (error as Error).message;
   }
 };
 
@@ -57,6 +63,20 @@ export const addNewProduct = ({
 }) => {
   original.push({ id, description, model, brand });
   return { id, description, model, brand };
+};
+
+export const updateProductById = (payload: Product) => {
+  try {
+    const { id, description, model, brand } = payload;
+    const item = getProductById(id);
+    (item as Product).description = description;
+    (item as Product).model = model;
+    (item as Product).brand = brand;
+
+    return item;
+  } catch (error) {
+    return (error as Error).message;
+  }
 };
 
 export const reseed = () => {
