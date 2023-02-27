@@ -11,49 +11,72 @@ import {
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  const { type, value } = req.query;
-  const result = getProducts({
-    type: type as keyof Product,
-    value: value as string,
-  });
-  return res.status(200).json(result);
+router.get('/', (req, res, next) => {
+  try {
+    const { type, value } = req.query;
+    const result = getProducts({
+      type: type as keyof Product,
+      value: value as string,
+    });
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
 });
 
-router.get('/:id', (req, res) => {
-  const { id } = req.params;
-  const result = getProductById(id);
-  return res.status(200).json(result);
+router.get('/:id', (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const result = getProductById(id);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
 });
 
-router.post('/', (req, res) => {
-  const { id, description, model, brand } = req.body;
-  const result = addNewProduct({ id, description, model, brand });
-  return res.status(201).json(result);
+router.post('/', (req, res, next) => {
+  try {
+    const { id, description, model, brand } = req.body;
+    const result = addNewProduct({ id, description, model, brand });
+    res.status(201).json(result);
+  } catch (error) {
+    next(error);
+  }
 });
 
-router.put('/:id', (req, res) => {
-  const { id } = req.params;
-  const { description, model, brand } = req.body;
-  console.log(description, model, brand);
-  const result = updateProductById({
-    id,
-    description,
-    model,
-    brand,
-  });
-  return res.status(200).json(result);
+router.put('/:id', (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { description, model, brand } = req.body;
+    const result = updateProductById({
+      id,
+      description,
+      model,
+      brand,
+    });
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
 });
 
-router.delete('/:id', (req, res) => {
-  const { id } = req.params;
-  deleteProductById(id);
-  return res.status(200).json(true);
+router.delete('/:id', (req, res, next) => {
+  try {
+    const { id } = req.params;
+    deleteProductById(id);
+    res.status(200).json(true);
+  } catch (error) {
+    next(error);
+  }
 });
 
-router.post('/reseed', (_, res) => {
-  reseed();
-  return res.status(200).json(true);
+router.post('/reseed', (_, res, next) => {
+  try {
+    reseed();
+    res.status(200).json(true);
+  } catch (error) {
+    next(error);
+  }
 });
 
 export default router;

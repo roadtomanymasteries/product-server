@@ -17,7 +17,11 @@ export const getProductById = (id: string) => {
     });
     return result[0];
   } catch (error) {
-    return (error as Error).message;
+    console.error({
+      message: 'Cannot get product by Id',
+      description: (error as Error).message,
+    });
+    throw error;
   }
 };
 
@@ -36,7 +40,11 @@ export const getProducts = ({
       (item) => item[type].toLowerCase() === value.toLowerCase(),
     );
   } catch (error) {
-    return (error as Error).message;
+    console.error({
+      message: 'Cannot get Products',
+      description: (error as Error).message,
+    });
+    throw error;
   }
 };
 
@@ -46,7 +54,11 @@ export const deleteProductById = (id: string) => {
     original.splice(removalIndex, 1);
     return true;
   } catch (error) {
-    return (error as Error).message;
+    console.error({
+      message: 'Cannot delete product by Id',
+      description: (error as Error).message,
+    });
+    throw error;
   }
 };
 
@@ -61,8 +73,16 @@ export const addNewProduct = ({
   model: string;
   brand: string;
 }) => {
-  original.push({ id, description, model, brand });
-  return { id, description, model, brand };
+  try {
+    original.push({ id, description, model, brand });
+    return { id, description, model, brand };
+  } catch (error) {
+    console.error({
+      message: 'Cannot add new product',
+      description: (error as Error).message,
+    });
+    throw error;
+  }
 };
 
 export const updateProductById = (payload: Product) => {
@@ -75,7 +95,11 @@ export const updateProductById = (payload: Product) => {
 
     return item;
   } catch (error) {
-    return (error as Error).message;
+    console.error({
+      message: 'Cannot update product by Id',
+      description: (error as Error).message,
+    });
+    throw error;
   }
 };
 
